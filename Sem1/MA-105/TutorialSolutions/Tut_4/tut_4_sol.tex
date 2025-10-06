@@ -1,0 +1,202 @@
+\documentclass[14pt]{extarticle}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} 
+
+\title{\vspace{-3cm}MA-105 Tutorial-4 Solutions}
+\author{Daksh Maahor}
+\date{August 2025}
+
+\begin{document}
+\maketitle
+
+\bigskip
+
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Find the volume of the solid obtained by revolving the region under}
+\[g(x)=\frac{\tan^2 x}{x},\quad g(0)=0,\qquad 0\le x\le \frac{\pi}{4}\]
+\textbf{about the $y$-axis.}
+
+\textbf{Solution:}
+Using the cylindrical shell method the volume is
+\begin{align*}    
+V&=2\pi\int_{0}^{\pi/4} x\,g(x)\,dx \\ &= 2\pi\int_0^{\pi/4} x\cdot\frac{\tan^2 x}{x}\,dx \\&= 2\pi\int_0^{\pi/4}\tan^2 x\,dx.
+\end{align*}
+Use the identity $\tan^2 x=\sec^2 x-1$ to compute the integral:
+\begin{align*}
+\int_0^{\pi/4} \tan^2 x\,dx &= \int_0^{\pi/4}(\sec^2 x-1)\,dx \\&= [\tan x - x]_0^{\pi/4} = \big(1-\tfrac{\pi}{4}\big)-0.
+\end{align*}
+Thus
+\[
+V = 2\pi\Big(1-\frac{\pi}{4}\Big) = 2\pi - \frac{\pi^2}{2}.
+\]
+
+\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Prove that given } $m,n \in\mathbbm{N}$, $m\ne n$,
+
+\[
+\int_{-1}^1 D^m(x^2-1)^m\, D^n(x^2-1)^n\,dx = 0.
+\]
+
+\textbf{Solution:}
+
+Let $D = \dfrac{d}{dx}$ and define
+\[
+  u_m(x) = (x^2 - 1)^m, \quad u_n(x) = (x^2 - 1)^n.
+\]
+We want to show that for $m,n \in \mathbbm{N}$, $m \neq n$,
+\[
+I = \int_{-1}^{1} D^m u_m(x) \, D^n u_n(x) \, dx = 0.
+\]
+
+Without loss of generality, assume $n > m$.
+
+\bigskip
+\textbf{Step 1: Integrate by parts $n$ times.}
+
+We integrate by parts repeatedly, moving one derivative at a time from the factor $D^n u_n$ to the factor $D^m u_m$. After $n$ integrations by parts, we obtain
+\[
+I = (-1)^n \int_{-1}^1 D^{m+n} u_m(x) \, u_n(x) \, dx + B, \tag{1}
+\]
+where $B$ denotes the collection of all boundary terms resulting from the $n$ integrations by parts.
+
+\bigskip
+\textbf{Step 2: The interior integral vanishes.}
+
+Since $u_m(x) = (x^2 - 1)^m$ is a polynomial of degree $2m$, its $(m+n)$-th derivative vanishes identically for $n > m$ (because $m+n > 2m$ implies $D^{m+n}u_m \equiv 0$). Therefore the integral term in (1) is zero, and
+\[
+I = B.
+\]
+
+\bigskip
+\textbf{Step 3: Show that the boundary terms $B$ vanish.}
+
+Each boundary term generated during integration by parts is a sum of expressions of the form
+\[
+\big[D^r u_m(x) \, D^s u_n(x)\big]_{x=-1}^{x=1},
+\]
+where $r,s \ge 0$ and $r+s \le n-1$.
+
+We now show that $D^s u_n(\pm 1) = 0$ for all $s = 0,1,\dots,n-1$. Since
+\[
+u_n(x) = (x^2 - 1)^n = (x-1)^n(x+1)^n,
+\]
+at $x = 1$, the factor $(x-1)^n$ vanishes to order $n$, and hence all derivatives up to order $n-1$ are zero. Similarly, at $x=-1$, the factor $(x+1)^n$ ensures all derivatives up to order $n-1$ vanish.
+
+Thus, every boundary term involves $D^s u_n(\pm 1)$ with $s \le n-1$, and therefore each term equals zero. Hence $B = 0$.
+
+\bigskip
+\textbf{Step 4: Conclusion.}
+
+Combining the results from Steps 2 and 3, we find that both the integral and boundary contributions vanish, so
+\[
+\boxed{\int_{-1}^1 D^m(x^2 - 1)^m \, D^n(x^2 - 1)^n \, dx = 0, \quad m \ne n}
+\]
+
+This completes the proof.
+
+
+\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Let $f:\mathbbm{I}\to\mathbbm{R}$ be convex on an open interval $\mathbbm{I}$.}
+\textbf{Can $f$ have a local maximum? Can it have a local minimum? Can it have two distinct local minima?}
+
+\textbf{Solution:}
+
+\begin{enumerate}
+\item \textbf{A convex function cannot have a strict local maximum on an open interval.}
+
+Suppose $f$ is convex on the open interval $\mathbbm{I}$ and that $x_0\in\mathbbm{I}$ is a local maximum. Then there exists $\delta>0$ such that for all $x$ with $|x-x_0|<\delta$ we have $f(x)\le f(x_0)$. Take any $x_1\in (x_0,x_0+\delta)$. For each $t\in(0,1)$ set
+\[
+x_t = (1-t)x_0 + t x_1 = x_0 + t(x_1-x_0),
+\]
+which lies in $(x_0,x_0+\delta)$ when $t$ is small. By convexity,
+\[
+f(x_t) \le (1-t)f(x_0) + t f(x_1) \le (1-t)f(x_0) + t f(x_0) = f(x_0),
+\]
+since $f(x_1)\le f(x_0)$ by local maximality. Thus on the whole small right-hand neighbourhood we have $f(x)\le f(x_0)$; similarly from the left. If the inequality is strict for some $x_1$ (i.e. $f(x_1)<f(x_0)$) then convexity forces a strict inequality for points arbitrarily close to $x_0$, contradicting that $x_0$ is a local maximum unless $f$ is constant on a neighbourhood of $x_0$.
+
+
+Therefore a convex function on an open interval cannot have a strict local maximum; it can have a local maximum only if it is constant on some interval containing that point.
+
+
+\item \textbf{A local minimum (if it exists) is a global minimum.}
+
+
+Suppose $x_0\in\mathbbm{I}$ is a local minimizer: there exists $\delta>0$ with $f(x)\ge f(x_0)$ for all $x$ satisfying $|x-x_0|<\delta$. Fix any $x\in\mathbbm{I}$. For each $t\in[0,1]$ define $x_t=(1-t)x_0 + t x$. By convexity,
+\[
+f(x_t) \le (1-t)f(x_0) + t f(x).
+\]
+Rearrange to get
+\[
+f(x) \ge f(x_0) + \frac{f(x_t)-f(x_0)}{t}.
+\]
+Now choose $t$ small enough so that $x_t$ lies in the neighbourhood $(x_0-\delta,x_0+\delta)$. For such $t$ we have $f(x_t)\ge f(x_0)$, so the right-hand side is at least $f(x_0)$. Hence $f(x)\ge f(x_0)$. Since $x$ was arbitrary, $x_0$ is a global minimizer.
+
+
+In particular, if $f$ is differentiable and $x_0$ is an interior point with $f'(x_0)=0$, convexity implies $x_0$ is a global minimum because $f'$ is monotone nondecreasing for convex functions.
+
+
+\item \textbf{Two distinct local minima force the function to be constant on the segment joining them.}
+
+
+Suppose $x_1,x_2\in\mathbbm{I}$ are two distinct local minima with $x_1<x_2$. By the previous part each is a global minimum, so $f(x_1)=f(x_2)=m$ (the minimum value). For any $t\in[0,1]$ convexity gives
+\[
+f((1-t)x_1 + t x_2) \le (1-t)f(x_1) + t f(x_2) = m.
+\]
+But by minimality $f((1-t)x_1 + t x_2)\ge m$, so equality holds for every $t\in[0,1]$. Therefore $f$ is constant on the entire segment $[x_1,x_2]$, and every point of that segment is a local (indeed global) minimum.
+
+
+\textbf{Remarks and special cases:}
+
+
+\begin{itemize}
+\item If $f$ is strictly convex (i.e. strict inequality in the convexity relation for $x\ne y$ and $t\in(0,1)$), then $f$ cannot be constant on any nontrivial interval and therefore can have at most one global (hence local) minimum and no interval of minima.
+\item If $f$ is differentiable, convexity is equivalent to $f'$ being monotone nondecreasing. In that setting local minima occur exactly at points where $f'=0$ (if such points exist). Local maxima cannot occur because $f'$ cannot change sign from positive to negative without violating monotonicity.
+\item Example: $f(x)=x^2$ on $\mathbbm{I}=\mathbb{R}$ is convex, has a unique global (and local) minimum at $x=0$, and no local maxima. Example: $f(x)=0$ is constant, convex, and every point is both a local and global minimum (and also a local maximum in the non-strict sense).
+\end{itemize}
+
+
+\end{enumerate}
+
+\newpage
+
+\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Let $f:[0,\infty)\to\mathbbm{R}$. We say $\lim_{x\to\infty}f(x)=l$ if given $\varepsilon>0$ there exists $x_0$ such that $|f(x)-l|<\varepsilon$ for all $x>x_0$.}
+
+\textbf{Show that } $\lim_{x\to\infty} e^{-x^2}=0$, $\lim_{x\to\infty}\frac{1}{1+x^2}=0$, 
+\textbf{and } $\lim_{x\to\infty}\tan^{-1}x=\frac{\pi}{2}$. Also compute $\displaystyle\int_0^{\infty}\frac{dx}{1+x^2}$. 
+
+\textbf{Solution:}
+\begin{itemize}
+\item For $e^{-x^2}$: given $\varepsilon>0$ choose $M>0$ with $e^{-M^2}<\varepsilon$ (possible since $e^{-t}\to0$ as $t\to\infty$). Then for all $x>M$ we have $e^{-x^2}\le e^{-M^2}<\varepsilon$. Hence $\lim_{x\to\infty}e^{-x^2}=0$.
+
+\item For $\dfrac{1}{1+x^2}$: given $\varepsilon>0$ choose $M>0$ with $\frac{1}{1+M^2}<\varepsilon$ (take $M>\sqrt{\frac{1}{\varepsilon}-1}$). Then for all $x>M$ we have $0\le\dfrac{1}{1+x^2}\le\dfrac{1}{1+M^2}<\varepsilon$, so the limit is $0$.
+
+\item For $\arctan x$: use the identity valid for $x>0$:
+\[\tan^{-1} x + \tan^{-1}\frac{1}{x} = \frac{\pi}{2}.
+\]
+Since $\lim_{x\to\infty}\tan^{-1}\frac{1}{x}=\tan^{-1} 0=0$, it follows that
+\[\lim_{x\to\infty}\tan^{-1} x = \frac{\pi}{2}.
+\]
+Alternatively, note $\tan^{-1} x$ is increasing and bounded above by $\tfrac{\pi}{2}$, so the monotone convergence theorem gives the same limit.
+
+\newpage
+
+\item Finally compute the improper integral:
+\begin{align*}
+\int_0^{\infty}\frac{dx}{1+x^2} &= \lim_{R\to\infty}\int_0^R\frac{dx}{1+x^2} \\ &= \lim_{R\to\infty}[\tan^{-1} x]_0^R \\ &= \lim_{R\to\infty}\tan^{-1} R - 0 \\ &= \frac{\pi}{2}.
+\end{align*}
+\end{itemize}
+
+\end{enumerate}
+\end{document}
