@@ -1,0 +1,260 @@
+\documentclass[14pt]{extarticle}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} 
+
+\title{\vspace{-3cm}MA-105 Tutorial-3 Solutions}
+\author{Daksh Maahor}
+\date{August 2025}
+
+\begin{document}
+\maketitle
+
+\bigskip
+
+\begin{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Let a function $f(x)$ be defined as: }
+
+\[
+f(x) = \begin{cases}
+e^{-\frac{1}{x^2}} & x \neq 0 \\
+0 & x = 0
+\end{cases}
+\]
+
+\textbf{Prove that $f$ is differentiable at origin. Do higher order derivatives exist at origin? If so, find them.}
+
+\textbf{Solution:}
+
+We first show differentiability at $0$. For $x\neq 0$ the function is smooth; the only nontrivial point is $x=0$. Consider the difference quotient:
+\[
+\frac{f(x)-f(0)}{x-0}=\frac{e^{-1/x^2}}{x}=\frac{1}{x}e^{-1/x^2}.
+\]
+Let $t=1/|x|$. Then
+\[
+\left|\frac{e^{-1/x^2}}{x}\right|=t e^{-t^2}.
+\]
+As $x\to 0$, $t\to \infty$ and $t e^{-t^2}\to 0$ because exponential decay dominates any polynomial growth. Therefore the difference quotient tends to $0$, so $f'(0)=0$. Thus $f$ is differentiable at $0$.
+
+Next we show that \emph{all} higher derivatives at $0$ exist and are $0$. We prove by induction that for every integer $n\ge 0$ there exists a polynomial $P_n(1/x)$ (in $1/x$) such that for $x\neq0$:
+\[
+f^{(n)}(x) = P_n\bigl(1/x\bigr) e^{-1/x^2}.
+\]
+This is standard: differentiation of $e^{-1/x^2}$ yields factors of powers of $1/x$ times $e^{-1/x^2}$, so the representation holds for each $n$. In particular each $f^{(n)}(x)$ (for $x\neq0$) decays faster than any power of $x$ as $x\to0$, because $e^{-1/x^2}$ dominates.
+
+To compute the $n$-th derivative at $0$ we use the limit definition:
+\[
+f^{(n)}(0)=\lim_{x\to0}\frac{f^{(n-1)}(x)-f^{(n-1)}(0)}{x-0}.
+\]
+By the inductive representation, for $x\neq0$ we can write
+\[
+f^{(n-1)}(x)=Q(1/x)e^{-1/x^2}
+\]
+for some polynomial $Q$. Hence
+\[
+\left|\frac{f^{(n-1)}(x)-f^{(n-1)}(0)}{x}\right|=\frac{|Q(1/x)|}{|x|}e^{-1/x^2} \to 0
+\]
+as $x\to0$. Therefore $f^{(n)}(0)=0$ for every $n\ge1$. The base case $f(0)=0$ already holds, so all derivatives of all orders exist at $0$ and equal $0$.
+
+Remark: This shows $f$ is a $C^{\infty}$ function on $\mathbb R$ whose Taylor series about $0$ is identically $0$, yet $f$ is not the zero function (so the Taylor series does not converge to $f$ away from $0$).
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Let $f(x)=x^3-3x$. Sketch the graph of f(x). Determine the values of $a \in \mathbbm{R}$ for which the equation $f(x) = a$ has 3, 1, and no real roots.}
+
+\textbf{The points $p$ at which $f'(p) = 0$ are called critical points, and the value of $f(x)$ at that point, $f(p)$ are called critical values. Describe what happens to the roots of $f(x)=a$ when $a$ crosses a critical value of $f(x)$.}
+
+\textbf{Solution:}
+
+Compute derivative:
+\[
+f'(x)=3x^2-3=3(x^2-1).
+\]
+Critical points satisfy $f'(x)=0$, so $x=\pm1$. Evaluate $f$ at these points:
+\[ f(1)=1^3-3\cdot1=-2, \qquad f(-1)=(-1)^3-3(-1)=2. \]
+Thus $x=-1$ is a local maximum with value $2$, and $x=1$ is a local minimum with value $-2$. The cubic has the usual shape: rising to $+\infty$ as $x\to+\infty$ and falling to $-\infty$ as $x\to-\infty$, with a hill at $(-1,2)$ and a valley at $(1,-2)$.
+
+Because a cubic polynomial is odd-degree with real coefficients, it always has at least one real root. The number of \emph{distinct} real roots of $f(x)-a=0$ depends on $a$ relative to the critical values $2$ and $-2$:
+\begin{itemize}
+\item If $-2<a<2$, the horizontal line $y=a$ intersects the graph in three distinct points $\Rightarrow$ three distinct real roots.
+\item If $a=2$ or $a=-2$, the horizontal line is tangent to the curve at one of the critical points, producing a double root and a simple root (so two real roots counting multiplicity, but only two distinct roots if one is double).
+\item If $a>2$ or $a<-2$, the horizontal line meets the cubic only once $\Rightarrow$ exactly one real root.
+\end{itemize}
+
+In particular there are never \emph{no} real roots for a real cubic; at least one real root always exists.
+
+When the parameter $a$ crosses a critical value of $f$ (for instance goes from slightly below $2$ to slightly above $2$), two of the real roots collide at the critical point and then become complex (conjugate) for parameter values beyond the critical value. Thus crossing a critical value is precisely the event where two real roots merge into a double root and then cease to be two distinct real roots.
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={$x$},
+      ylabel={$f(x)$},
+      axis lines=middle,
+      samples=100,
+      domain=-3:3,
+      width=10cm,
+      height=10cm
+    ]
+    \addplot[blue, thick] {x^3 - 3*x};
+    \end{axis}
+  \end{tikzpicture}
+\end{center}
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Let $\mathbbm{I}$ be a closed bounded interval, and $f:\mathbbm{I} \to \mathbbm{R}$ be a bounded function.}
+
+\[
+M_{\mathbbm{I}} = \text{lub} \{f(x) \ | \ x \in \mathbbm{I} \}
+\]
+\[
+m_{\mathbbm{I}} = \text{glb} \{f(x) \ | \ x \in \mathbbm{I} \}
+\]
+
+\textbf{The value $M_{\mathbbm{I}} - m_{\mathbbm{I}} = \sigma(\mathbbm{I})$ is called the spread of $f$ across $\mathbbm{I}$.}
+
+\begin{enumerate}
+\item If $\mathbbm{I} \subset \mathbbm{J}$ what can you say about $\sigma(\mathbbm{I})$ and $\sigma(\mathbbm{J})$?
+\item Fix $p \in \mathbbm{I}$, consider a set of closed intervals $\mathbbm{J}_n$ that all enclose $p$, such that length of $\mathbbm{J}_n \to 0$ as $n \to \infty$. Is it necessary that for any function $f:\mathbbm{I}\to\mathbbm{R}$, $\sigma(\mathbbm{J}_n) \to 0$ as $n \to \infty$ for the function $f$. If not provide a counter-example. What if $f$ is continuous at $p$? Can you then say $\sigma(\mathbbm{J}_n) \to 0$ as $n \to \infty$?
+\item Take an interval $[a, \ b]$ and do repeated bisections on it $[a, \ b]; [a, \ \frac{a+b}{2}] \ [\frac{a+b}{2}, \ b]; [a, \ \frac{3a+b}{4}] \ [\frac{3a+b}{4}, \ \frac{a+b}{2}] \ [\frac{a+b}{2}, \ \frac{a+3b}{4}] \ [\frac{a+3b}{4}, b]$ etc. For simplicity, take $a = 0$ and $b=1$.
+
+
+Let $f:[0, \ 1] \to \mathbbm{R}$ be a continuous function.
+
+Let $\mathbbm{I}_2 = [0, \ 1]$
+
+Let $\mathbbm{I}_3 = [0, \ \frac{1}{2}]$, $\mathbbm{I}_4 = [\frac{1}{2}, \ 1]$
+
+Let $\mathbbm{I}_5 = [0, \ \frac{1}{4}]$, $\mathbbm{I}_6 = [\frac{1}{4}, \ \frac{1}{2}]$, $\mathbbm{I}_7 = [\frac{1}{2}, \ \frac{3}{4}]$, $\mathbbm{I}_8 = [\frac{3}{4}, \ 1]$ etc.
+
+The $2^{n-1}$ intervals $\mathbbm{I}_{2^{n-1}+1}, \ \dots, \ \mathbbm{I}_{2^n}$ are all non overlapping and equal in length $l = \frac{1}{2^{n-1}}$.
+
+Prove that $\lim_{n\to\infty} \sigma(\mathbbm{I}_n) = 0$
+
+If $A_n = \text{max}\{\sigma(\mathbbm{I}_j) \ | \ j = 2^{n-1}+1, \dots, 2^n\}$, prove that $\lim_{n\to\infty} \mathbbm{A}_n = 0$
+
+
+\end{enumerate}
+
+\textbf{Solution:}
+
+(a) If $\mathbbm{I}\subset\mathbbm{J}$ then the set of values $f(\mathbbm{I})$ is a subset of $f(\mathbbm{J})$. Hence
+\[
+m_{\mathbbm{J}}\le m_{\mathbbm{I}}\le M_{\mathbbm{I}}\le M_{\mathbbm{J}},
+\]
+so
+\[
+\sigma(\mathbbm{I})=M_{\mathbbm{I}}-m_{\mathbbm{I}}\le M_{\mathbbm{J}}-m_{\mathbbm{J}}=\sigma(\mathbbm{J}).
+\]
+Thus $\sigma(\mathbbm{I})\le\sigma(\mathbbm{J})$.
+
+(b) It is \emph{not} necessary in general. Counterexample: let $f$ be the Dirichlet-type function
+\[
+f(x)=\begin{cases}1 & x\in\mathbb Q,\\ 0 & x\notin\mathbb Q.\end{cases}
+\]
+This function is bounded on any interval but is discontinuous at every point. For any sequence of closed intervals $\mathbbm{J}_n$ containing a point $p$ with lengths shrinking to $0$, each interval contains both rationals and irrationals, so
+\[
+\sup\{f(x) \ | \ x \in {\mathbbm{J}_n}\}=1,\qquad \inf\{f(x) \ | \ x \in {\mathbbm{J}_n}\}=0
+\]
+for every $n$. Hence $\sigma(\mathbbm{J}_n)=1$ for all $n$ and does \emph{not} tend to $0$.
+
+If, however, $f$ is continuous at $p$, then for any $\varepsilon>0$ there exists $\delta>0$ such that if $|x-p|<\delta$ then $|f(x)-f(p)|<\varepsilon/2$. For sufficiently large $n$, the interval $\mathbbm{J}_n$ lies inside $(p-\delta,p+\delta)$, so for such $n$ we have
+\[
+M_{\mathbbm{J}_n}-f(p)<\varepsilon/2,\qquad f(p)-m_{\mathbbm{J}_n}<\varepsilon/2,
+\]
+and therefore
+\[
+\sigma(\mathbbm{J}_n)=M_{\mathbbm{J}_n}-m_{\mathbbm{J}_n}<\varepsilon.
+\]
+Thus $\sigma(\mathbbm{J}_n)\to0$ as $n\to\infty$ when $f$ is continuous at $p$.
+
+(c) Now suppose $f$ is continuous on the compact interval $[0,1]$. Then $f$ is uniformly continuous. Fix $\varepsilon>0$. By uniform continuity there exists $\delta>0$ such that whenever $|x-y|<\delta$ we have $|f(x)-f(y)|<\varepsilon$. Choose $N$ large enough so that the length $\ell_n=2^{-(n-1)}<\delta$ for all $n\ge N$. Every subinterval $\mathbbm{I}_j$ at the $n$-th stage has length $\ell_n<\delta$, so the oscillation (spread) on each such interval is less than $\varepsilon$. Hence for all $n\ge N$ and all $j$ in the range $2^{n-1}+1,\dots,2^n$ we have $\sigma(\mathbbm{I}_j)<\varepsilon$. Therefore
+\[
+A_n=\max{\sigma(\mathbbm{I}_j)}\le\varepsilon\qquad\text{for all }n\ge N,
+\]
+which implies $A_n\to0$ as $n\to\infty$. In particular for any sequence of nested intervals whose lengths go to $0$ we also get $\sigma(\mathbbm{I}_n)\to0$.
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item \textbf{Let $f:\mathbbm{I} \to \mathbbm{R}$ be a convex function on a closed interval $\mathbbm{I}$. Assume $x, y, z \in \mathbbm{I}$, $x < y < z$. Prove that the slope of chord joining $(x, f(x))$ and $(y, f(y)) \leq$ slope of chord joining $(y, f(y))$ and $(z, f(z))$.}
+
+\textbf{Solution:}
+
+Since $x < y < z$, the point $y$ lies between $x$ and $z$. Hence we can express $y$ as a convex combination of $x$ and $z$. Concretely, set
+\[
+t = \frac{y-x}{z-x}.
+\]
+Notice that since $x<y<z$, the fraction satisfies $0 < t < 1$. Then we can write
+\[
+y = (1-t)x + tz.
+\]
+
+Now recall the definition of convexity: a function $f$ is convex on $\mathbbm{I}$ if for every $u, v \in \mathbbm{I}$ and $\lambda \in [0,1]$,
+\[
+f\big((1-\lambda)u + \lambda v\big) \leq (1-\lambda)f(u) + \lambda f(v).
+\]
+
+Applying this definition with $u = x$, $v = z$, and $\lambda = t$, we obtain
+\[
+f(y) = f\big((1-t)x + tz\big) \leq (1-t)f(x) + t f(z).
+\]
+
+This inequality is the starting point. Subtract $f(x)$ from both sides:
+\[
+f(y) - f(x) \leq (1-t)\big(f(x) - f(x)\big) + t\big(f(z) - f(x)\big),
+\]
+which simplifies to
+\[
+f(y) - f(x) \leq t\big(f(z) - f(x)\big).
+\]
+
+Now divide both sides by $y-x$. Since $y>x$, this denominator is positive, so the inequality direction is preserved:
+\[
+\frac{f(y) - f(x)}{y - x} \leq \frac{t}{y-x}\big(f(z) - f(x)\big).
+\]
+
+But recall that $t = \dfrac{y-x}{z-x}$. Substituting this expression for $t$, the right-hand side becomes
+\[
+\frac{t}{y-x}(f(z) - f(x)) = \frac{1}{z-x}(f(z) - f(x)).
+\]
+So we now have
+\[
+\frac{f(y) - f(x)}{y-x} \leq \frac{f(z) - f(x)}{z-x}.
+\]
+
+Next, we want to compare $\dfrac{f(y) - f(x)}{y-x}$ with $\dfrac{f(z) - f(y)}{z-y}$. To do this, observe that
+\[
+\frac{f(z) - f(x)}{z-x} = \frac{(f(z) - f(y)) + (f(y) - f(x))}{(z-y) + (y-x)}.
+\]
+
+This is a weighted average of the two slopes:
+\[
+\frac{f(z) - f(x)}{z-x} = \frac{z-y}{z-x}\cdot \frac{f(z) - f(y)}{z-y} + \frac{y-x}{z-x}\cdot \frac{f(y) - f(x)}{y-x}.
+\]
+
+Since the coefficients $\dfrac{z-y}{z-x}$ and $\dfrac{y-x}{z-x}$ are positive and sum to $1$, this shows that the slope $\dfrac{f(z)-f(x)}{z-x}$ is a convex combination of the two smaller slopes.
+
+From the inequality we derived earlier,
+\[
+\frac{f(y) - f(x)}{y-x} \leq \frac{f(z) - f(x)}{z-x},
+\]
+it follows that $\dfrac{f(y)-f(x)}{y-x}$ is less than or equal to this weighted average of the two slopes. The only way this can hold is if
+\[
+\frac{f(y) - f(x)}{y-x} \leq \frac{f(z) - f(y)}{z-y}.
+\]
+
+Thus, the slope of the secant line through $(x, f(x))$ and $(y, f(y))$ is less than or equal to the slope of the secant line through $(y, f(y))$ and $(z, f(z))$.
+
+\qed
+
+\end{enumerate}
+\end{document}
