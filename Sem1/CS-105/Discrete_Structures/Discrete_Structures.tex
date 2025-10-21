@@ -1141,13 +1141,9 @@ Since each $\Sset_i$ is an anti-chain, the above theorem was restated in a diffe
     If the largest chain in a poset $(\Sset, \pordereq)$ is of size $t$, then $\Sset$ can be partitioned into $t$ anti-chains.
 \end{theorem}
 
-And as a consequence of the above theorem comes the below corollary.
-
 \begin{theorem}[Dilworth's Lemma]
     $\forall t > 0$ any poset with $n$ elements must have either a chain of size greater than $t$ or an anti chain with at least $\left \lceil \frac{n}{t} \right \rceil$ elements.
 \end{theorem}
-
-The proofs of the above theorems are trivial and hence left as an exercise to the reader :)
 
 \subsection{Minimal and maximal elements}
 
@@ -1172,6 +1168,126 @@ An element $l \in \Sset$ is called a lower bound for $\A$ if $\forall a \in \A, 
 An element $u \in \Sset$ is called a least upper bound for $\A$ if it is an upper bound and for all upper bounds $u'$, $u \pordereq u'$.
 
 An element $l \in \Sset$ is called a greatest lower bound for $\A$ if it is a lower bound and for all lower bounds $l'$, $l' \pordereq l$.
+
+\section{Basic Structures : Lattices}
+
+\subsection{Lattice}
+A lattice is a poset in which every pair of elements has both a least upper bound and a greatest lower bound.
+\[
+    \forall x, y \in \Sset \exists l, u \in \Sset, \text{such that } l \text{ is the glb and } u \text{ is the lub of } \{x, y\}
+\]
+Eg:- The partial order $(\powerset(\Sset), \subseteq)$ is a lattice, while the partial order $(\{2, 4, 5, 10, 12, 20, 25\}, |)$ is not a lattice, as there is no least upper bound for 10 and 25.
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={draw, rectangle, minimum width=1.2cm, align=center},
+  node distance=1.8cm and 2cm
+]
+
+
+% Level 2
+\node (5)  {$20$};
+\node (4)  [left=of 5] {$12$};
+\node (6)  [right=of 5]{$25$};
+
+% Level 1
+\node (2)   [below left=of 5]      {$4$};
+\node (3)   [below right=of 5]{$10$};
+
+% Level 0
+\node (0) [below=of 2] {2};
+\node (1) [below=of 3] {5};
+
+% Edges
+\draw[->] (0) -- (2);
+\draw[->] (0) -- (3);
+\draw[->] (1) -- (3);
+\draw[->] (3) -- (5);
+\draw[->] (2) -- (4);
+\draw[->] (2) -- (5);
+\draw[->] (1) to[out=45, in=-45] (6);
+
+\end{tikzpicture}
+\end{center}
+Applications of Lattices:
+\begin{itemize}
+    \item Models of information flow
+    \item Finite lattices have a strong link with boolean algebra
+    \item Applications in computer science and mathematics include the formal semantics of programming languages and program verification.
+\end{itemize}
+
+\newpage
+
+\section{Counting and Combinatorics}
+
+\subsection{The Product Principle}
+
+If there are $n_1$ ways of doing one thing and $n_2$ ways of doing another, then there are $n_1n_2$ ways of doing both.
+
+Eg: How many functions are there from a set of size $n$ to itself?
+
+Consider a set $\A$ of $n$ elements, $\A = \{a_1, \dots, a_n\}$. Consider a function $f : \A \to \A$. Now, for each $f(a_i)$, we have $n$ choices in the co-domain. Thus, the total number of such functions is $n \times \dots \times n$ $n$-times, or $n^n$.
+
+\subsection{The Sum Principle}
+
+If something can be done in $n_1$ or $n_2$ ways such that none of the $n_1$ ways is the same as any of the $n_2$ ways, then the total number of ways to do that thing is $n_1 + n_2$.
+
+Eg: How many subsets does a set $\A$ having $n$ elements have?
+
+Sol: We can either choose no elements from $\A$, or choose $1$ element from $\A$, $\dots$, or choose $n$ elements from $\A$.
+
+Therefore, the total number of subsets $= \binom{n}0{} + \binom{n}{1} + \dots + \binom{n}{n}$ = $2^n$
+
+The number denoted as $\binom{n}{k}$ denote the total number of subsets of size $k$, of a given set of size $n$.
+
+To find the value of $\binom{n}{k}$, let us count the total number of ordered subsets of size $k$.
+
+The first element can be chosen in $n$ ways, next one in $n-1$ ways and so on.
+
+Thus, total number of ways $= n \times \dots \times (n-k+1) = \frac{n!}{(n-k)!}$
+
+Also, total number of ways $=$ number of ways to make an unordered set $\times$ number of ways to order it $= \binom{n}{k} \times k!$
+
+On equating,
+
+\begin{align*}
+    \binom{n}{k} \times k! &= \frac{n!}{(n-k)!} \\
+    \binom{n}{k} &= \frac{n!}{k!(n-k)!}
+\end{align*}
+
+This method is also known as principle of double counting.
+
+\subsection{The Principle of Double Counting}
+
+The principle of double counting is a method used to prove that two expressions are equal by showing that they both count the same set of objects in two different ways.
+
+Some Examples :
+
+\begin{itemize}
+    \item $\sum_{k=0}^n \binom{n}{k} = 2^n$
+
+    Consider a set of $n$ elements. Let us count the number of subsets of this set. The number of subsets with $k$ elements is given by $\binom{n}{k}$, hence, total number of subsets $= \sum_{k=0}^n \binom{n}{k}$. Now for any subset, it will either have a given element or it won't have, ie, we have $2$ choices for each element in the set. Thus total number of subsets $= 2 \times \dots \times 2 \ (n$ times$) = 2^n$.
+
+    Thus, $\sum_{k=0}^n \binom{n}{k} = 2^n$
+
+    \item  $\binom{n}{k} = \binom{n}{n-k}$
+
+    Consider a set of $n$ elements. The number of ways to select $k$ elements from the given set would be $\binom{n}{k}$. But selecting $k$ objects from a set of $n$ objects is same as rejecting $n-k$ objects from the same set of $n$ objects. Thus the number of ways is also $\binom{n}{n-k}$.
+
+    Thus, $\binom{n}{k} = \binom{n}{n-k}$
+
+    \item $k\binom{n}{k} = n\binom{n-1}{k-1}$
+
+    Consider a group of $n$ people, and we want to create a team of $k$ people from them with a team leader. We can either first select $k$ people in $\binom{n}{k}$ ways, and then select a leader from them in $k$ ways making the total number of ways $= k\binom{n}{k}$. Or we can first select the team leader from the $n$ people in $n$ ways, and then from the remaining $n-1$ people, we can select the remaining $k-1$ members of the team in $\binom{n-1}{k-1}$ ways, making the total number of ways $= n\binom{n-1}{k-1}$.
+
+    Thus, $k\binom{n}{k} = n\binom{n-1}{k-1}$
+
+    \item $\binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$
+
+    Consider a set of $n+1$ elements. Let $a$ be an element of the set. Consider the number of ways to select $k$ items from the set, clearly it is $\binom{n+1}{k}$. Now, either those $k$ items include $a$, then the number of ways to select the remaining $k-1$ items from the remaining $n$ items would be $\binom{n}{k-1}$. Or those $k$ items do not include $a$, in which case we will have to select all the $k$ items from the remaining $n$ items making the number of cases $= \binom{n}{k}$. Thus total number of ways to select those $k$ items $= \binom{n}{k} + \binom{n}{k-1}$.
+
+    Thus, $\binom{n+1}{k} = \binom{n}{k} + \binom{n}{k-1}$
+\end{itemize}
 
 \end{document}
 
